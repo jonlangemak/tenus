@@ -172,14 +172,15 @@ func DockerPidByName(name string, dockerHost string) (int, error) {
 			return net.DialTimeout(network, dockerHost, timeout)
 		},
 	}
-
+	fmt.Println("This far is good")
 	dockerClient := http.Client{Transport: httpTransport}
-
+	fmt.Println(req)
 	resp, err := dockerClient.Do(req)
+	fmt.Println("This far is good")
 	if err != nil {
 		return 0, fmt.Errorf("Failed to create http client: %s", err)
 	}
-
+	fmt.Println("This far is good")
 	switch resp.StatusCode {
 	case http.StatusNotFound:
 		return 0, fmt.Errorf("Docker container \"%s\" does not seem to exist!", name)
@@ -192,7 +193,7 @@ func DockerPidByName(name string, dockerHost string) (int, error) {
 			Pid float64
 		}
 	}{}
-
+	fmt.Println(data)
 	err = json.NewDecoder(resp.Body).Decode(&data)
 	if err != nil {
 		return 0, fmt.Errorf("Unable to decode json response: %s", err)

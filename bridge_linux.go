@@ -57,6 +57,17 @@ func NewBridge() (Bridger, error) {
 	}, nil
 }
 
+func DelBridgeWithName(ifcName string) error {
+	if ok, err := NetInterfaceNameValid(ifcName); !ok {
+		return err
+	}
+
+	if err := netlink.NetworkLinkDel(ifcName); err != nil {
+		return err
+	}
+	return nil
+}
+
 // NewBridge creates new network bridge on Linux host with the name passed as a parameter.
 // It is equivalent of running: ip link add name ${ifcName} type bridge
 // It returns error if the bridge can not be created.
